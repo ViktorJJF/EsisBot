@@ -46,7 +46,7 @@ async function beginSeed() {
     console.log('El file: ', file);
     if (file.includes('.seeder')) {
       const modelName = formatFileName(file);
-      const model = require(`../server/models/${modelName}`);
+      const model = require(`../models/${modelName}`);
       const data = require(`./${file}`);
       await seedCollection(model, await data);
     }

@@ -34,6 +34,7 @@
     "implicit-arrow-linebreak": ["off"],
     "no-param-reassign": ["off"],
     "operator-linebreak": ["off"],
+    "no-useless-catch": ["off"],
     "no-underscore-dangle": ["off"],
     "no-prototype-builtins": ["off"], //like hasownproperty
     "no-use-before-define": ["off"],

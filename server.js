@@ -41,6 +41,8 @@ app.set('views', path.join(__dirname, 'views'));
 // app.engine('html', require('ejs').renderFile)
 app.set('view engine', 'html');
 app.use('/api', require('./routes/api/index.js'));
+// Telegram
+require('./chatbots/Telegram/telegramBot');
 
 // Handle Production
 // if (process.env.NODE_ENV === 'production') {
