@@ -160,6 +160,21 @@ module.exports = {
   },
 
   /**
+   * Gets one item by custom fields
+   * @param {object} fields - fields
+   */
+  async getOneItem(fields, model) {
+    return new Promise((resolve, reject) => {
+      model.findOne(fields, (err, payload) => {
+        if (err) {
+          reject(buildErrObject(422, err.message));
+        }
+        resolve({ ok: true, payload });
+      });
+    });
+  },
+
+  /**
    * Gets item from database by id
    * @param {string} id - item id
    */

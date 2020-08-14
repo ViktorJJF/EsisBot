@@ -3,18 +3,22 @@ const initMongo = require('../config/mongo');
 
 initMongo();
 
+const db = require('../helpers/db');
 // models
-// const Products = require('../models/Products');
+const ChatbotUser = require('../models/ChatbotUsers');
 
-// (async () => {
-//   const products = await Products.find({});
-//   console.log('los produyctos: ', products);
-//   let temporary;
-//   for (const product of products) {
-//     temporary = product.price;
-//     product.price = product.purchasePrice;
-//     product.purchasePrice = temporary;
-//     product.save();
-//     console.log('guardado prro');
-//   }
-// })();
+(async () => {
+  // create item
+  let item = await db.createItem(
+    {
+      dni: '71203063',
+      type: 'DOCENTE',
+      platformId: '5f35fb31519f142148f0369a',
+      first_name: 'Pablo',
+      last_name: 'Mollo',
+      platform: 'T',
+    },
+    ChatbotUser,
+  );
+  console.log('el item creado: ', item);
+})();

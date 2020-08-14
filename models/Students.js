@@ -7,9 +7,13 @@ const studentsSchema = new Schema(
     first_name: String,
     last_name: String,
     phone: String,
-    platformId: String,
+    email: String,
+    studentCode: String,
     profile_pic: String,
-    teacherId: String,
+    teacherId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Teachers',
+    },
     cycle: {
       type: String,
       enum: {

@@ -1,20 +1,155 @@
 const faker = require('faker');
 
-const json = [];
+const json = [
+  {
+    first_name: 'Edgar Aurelio',
+    last_name: 'Taya Acosta',
+    phone: null,
+    dni: null,
+    email: 'etayaa@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Erbert Francisco',
+    last_name: 'Osco Mamani',
+    phone: null,
+    dni: null,
+    email: 'eoscom@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Ana Silvia',
+    last_name: 'Cori Morón',
+    phone: null,
+    dni: null,
+    email: 'acorim@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Katherine De los Milagros',
+    last_name: 'Elías Quispe',
+    phone: null,
+    dni: null,
+    email: 'keliasq@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Hugo Manuel',
+    last_name: 'Barraza Condori',
+    phone: null,
+    dni: null,
+    email: 'ebarrazac@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Jimmy Cristian',
+    last_name: 'Muñóz Miranda',
+    phone: null,
+    dni: null,
+    email: 'jmuñozm@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Rolando',
+    last_name: 'Álvarez Cusi',
+    phone: null,
+    dni: null,
+    email: 'ralvarezc@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Karín Yanet',
+    last_name: 'Supo Gavancho',
+    phone: null,
+    dni: null,
+    email: 'ksupog@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Freeman Hugo',
+    last_name: 'Llamozas Escalante',
+    phone: null,
+    dni: null,
+    email: 'fllamozase@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Luis Johnson Paúl',
+    last_name: 'Mori Sosa',
+    phone: null,
+    dni: null,
+    email: 'lmoris@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Gianfranco Alexey',
+    last_name: 'Málaga Tejada',
+    phone: null,
+    dni: null,
+    email: 'gmalagat@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Mario',
+    last_name: 'Gauna Chino',
+    phone: null,
+    dni: null,
+    email: 'mgaunac@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Carlos Hernán',
+    last_name: 'Acero Charaña',
+    phone: null,
+    dni: null,
+    email: 'caceroc@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Edwin Antonio',
+    last_name: 'Hinojosa Ramos',
+    phone: null,
+    dni: null,
+    email: 'ehinojosah@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Nelson Abrahan Pablo',
+    last_name: 'Mollo Condori',
+    phone: null,
+    dni: null,
+    email: 'nmolloc@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+  {
+    first_name: 'Jaime Freddy',
+    last_name: 'Polar Fuentes',
+    phone: null,
+    dni: null,
+    email: 'jpolarf@unjbg.edu.pe',
+    platformId: null,
+    profile_pic: null,
+  },
+];
 
 module.exports = new Promise(async (resolve) => {
   // GET FOREIGN IDS
   // GET DATA
-  for (let i = 0; i < 18; i++) {
-    json.push({
-      first_name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
-      phone: faker.phone.phoneNumberFormat(),
-      email: faker.internet.email(),
-      platformId: faker.commerce.price(1000000, 2000000),
-      profile_pic: faker.internet.avatar(),
-    });
-  }
   // END DATA
   resolve(json);
 });

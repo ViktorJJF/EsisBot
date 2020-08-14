@@ -9,17 +9,18 @@ module.exports = new Promise(async (resolve) => {
   const teachers = await Teacher.find();
   let cycles = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
   // GET DATA
-  for (let i = 0; i < 315; i++) {
-    json.push({
-      first_name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
-      phone: faker.phone.phoneNumberFormat(),
-      platformId: faker.commerce.price(1000000, 2000000),
-      profile_pic: faker.internet.avatar(),
-      teacherId: selectRandomId(teachers),
-      cycle: cycles[Random(0, cycles.length - 1)],
-    });
-  }
+  // for (let i = 0; i < 315; i++) {
+  json.push({
+    first_name: 'Victor Juan',
+    last_name: 'Jimenez Flores',
+    phone: '983724514',
+    studentCode: '2013-39098',
+    email: 'vjimenezf@gmail.com',
+    profile_pic: faker.internet.avatar(),
+    teacherId: selectRandomId(teachers),
+    cycle: cycles[Random(0, cycles.length - 1)],
+  });
+  // }
   // END DATA
   resolve(json);
 });

@@ -13,7 +13,7 @@ const coursesSchema = new Schema(
     },
     credit: Number,
     material: [{ name: String, url: String }],
-    syllabys: String,
+    syllabus: String,
   },
   {
     versionKey: false,
