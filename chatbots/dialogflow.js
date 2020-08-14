@@ -2,7 +2,10 @@ const dialogflow = require('dialogflow');
 
 const credentials = {
   client_email: process.env.GOOGLE_CLIENT_EMAIL,
-  private_key: process.env.GOOGLE_PRIVATE_KEY,
+  private_key: process.env.GOOGLE_PRIVATE_KEY.replace(
+    /\\n/g,
+    String.fromCharCode(10),
+  ),
 };
 
 const sessionClient = new dialogflow.SessionsClient({
