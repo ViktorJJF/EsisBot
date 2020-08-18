@@ -54,7 +54,7 @@ require('./chatbots/Telegram/telegramBot');
 // });
 // }
 
-if (process.env.hosting === 'namecheap') {
+if (process.env.HOSTING === 'namecheap') {
   app.listen();
 } else {
   app.listen(app.get('port'));
