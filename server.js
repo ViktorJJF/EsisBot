@@ -54,7 +54,11 @@ require('./chatbots/Telegram/telegramBot');
 // });
 // }
 
-app.listen(app.get('port'));
+if (process.env.hosting === 'namecheap') {
+  app.listen();
+} else {
+  app.listen(app.get('port'));
+}
 
 // Init MongoDB
 initMongo();
