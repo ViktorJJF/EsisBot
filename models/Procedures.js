@@ -7,6 +7,7 @@ const proceduresSchema = new Schema(
     name: { type: String, required: true, unique: true },
     requirements: { type: String },
     attendant: String,
+    synonyms: [String],
   },
   {
     versionKey: false,

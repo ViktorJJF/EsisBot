@@ -41,6 +41,7 @@ async function sendToDialogFlow(msg, session, source, params) {
     };
     const responses = await sessionClient.detectIntent(request);
     const result = responses[0].queryResult;
+    console.log('el nombre del intent: ', result.intent.displayName);
     let defaultResponses = [];
     if (result.action !== 'input.unknown') {
       result.fulfillmentMessages.forEach((element) => {
@@ -49,10 +50,15 @@ async function sendToDialogFlow(msg, session, source, params) {
         }
       });
     }
-    if (defaultResponses.length > 0) {
-      result.fulfillmentMessages = defaultResponses;
-      return result;
+    if (defaultResponses.length === 0) {
+      result.fulfillmentMessages.forEach((element) => {
+        if (element.platform === 'PLATFORM_UNSPECIFIED') {
+          defaultResponses.push(element);
+        }
+      });
     }
+    result.fulfillmentMessages = defaultResponses;
+
     return result;
     // console.log("se enviara el resultado: ", result);
   } catch (e) {

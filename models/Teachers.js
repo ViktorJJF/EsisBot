@@ -8,7 +8,6 @@ const teacherSchema = new Schema(
     dni: String,
     last_name: String,
     phone: String,
-    platformId: String,
     profile_pic: String,
     email: String,
   },

@@ -14,6 +14,7 @@ const coursesSchema = new Schema(
     credit: Number,
     material: [{ name: String, url: String }],
     syllabus: String,
+    synonyms: [String],
   },
   {
     versionKey: false,

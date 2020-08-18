@@ -11,6 +11,7 @@ const json = [
     credit: '',
     material,
     syllabus: faker.internet.url(),
+    synonyms: ['MATEMÁTICA'],
   },
   {
     name: 'FUNDAMENTOS DE PROGRAMACIÓN',
@@ -18,6 +19,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['FUNDAMENTOS DE PROGRAMACIÓN'],
   },
   {
     name: 'COMUNICACIÓN Y REDACCIÓN',
@@ -25,6 +27,7 @@ const json = [
     credit: '',
     material,
     syllabus: faker.internet.url(),
+    synonyms: ['COMUNICACIÓN Y REDACCIÓN'],
   },
   {
     name: 'MATEMÁTICA DISCRETA I',
@@ -32,6 +35,7 @@ const json = [
     credit: '',
     material,
     syllabus: faker.internet.url(),
+    synonyms: ['MATEMÁTICA DISCRETA I'],
   },
   {
     name: 'METODOLOGÍA DEL TRABAJO UNVIIERSITARIO',
@@ -39,6 +43,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['METODOLOGÍA DEL TRABAJO UNVIIERSITARIO'],
   },
   {
     name: 'QUÍMICA',
@@ -46,6 +51,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['QUÍMICA'],
   },
   {
     name: 'PROGRAMACIÓN GRÁFICA',
@@ -53,6 +59,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['PROGRAMACIÓN GRÁFICA'],
   },
   {
     name: 'Matemática III',
@@ -60,6 +67,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['Matemática III'],
   },
   {
     name: 'Teoría General de Sistemas',
@@ -67,6 +75,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['Teoría General de Sistemas'],
   },
   {
     name: 'Teoría General de Sistemas',
@@ -74,6 +83,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['Teoría General de Sistemas'],
   },
   {
     name: 'ESTADISTICA Y PROBABILIDADES',
@@ -81,6 +91,7 @@ const json = [
     credit: '',
     material,
     syllabus: faker.internet.url(),
+    synonyms: ['ESTADISTICA Y PROBABILIDADES'],
   },
   {
     name: 'ESTRUCTURA DE DATOS',
@@ -88,6 +99,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['ESTRUCTURA DE DATOS'],
   },
   {
     name: 'ALGORITMOS Y PROGRAMACIÓN PARALELA',
@@ -95,6 +107,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['ALGORITMOS Y PROGRAMACIÓN PARALELA'],
   },
   {
     name: 'SISTEMAS ELÉCTRICOS Y ELECTRÓNICOS',
@@ -102,6 +115,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['SISTEMAS ELÉCTRICOS Y ELECTRÓNICOS'],
   },
   {
     name: 'COMPILADORES Y TEORÍA DE LENGUAJES',
@@ -109,6 +123,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['COMPILADORES Y TEORÍA DE LENGUAJES'],
   },
   {
     name: 'ARQUITECTURA DE COMPUTADORES',
@@ -116,6 +131,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['ARQUITECTURA DE COMPUTADORES'],
   },
   {
     name: 'BASE DE DATOS I ',
@@ -123,6 +139,7 @@ const json = [
     credit: '',
     material,
     syllabus: faker.internet.url(),
+    synonyms: ['BASE DE DATOS I '],
   },
   {
     name: 'Diseño de Sistemas',
@@ -130,6 +147,7 @@ const json = [
     credit: '',
     material,
     syllabus: faker.internet.url(),
+    synonyms: ['Diseño de Sistemas'],
   },
   {
     name: 'INVESTIGACIÓN DE OPERACIONES I',
@@ -137,6 +155,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['INVESTIGACIÓN DE OPERACIONES I'],
   },
   {
     name: 'GESTIÓN EMPRESARIAL',
@@ -144,6 +163,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['GESTIÓN EMPRESARIAL'],
   },
   {
     name: 'TELEMÁTICA',
@@ -151,6 +171,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['TELEMÁTICA'],
   },
   {
     name: 'DINÁMICA DE SISTEMAS',
@@ -158,6 +179,7 @@ const json = [
     credit: '',
     material,
     syllabus: faker.internet.url(),
+    synonyms: ['DINÁMICA DE SISTEMAS'],
   },
   {
     name: 'SISTEMAS DE INFORMACIÓN',
@@ -165,6 +187,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['SISTEMAS DE INFORMACIÓN'],
   },
   {
     name: 'Ingeniería de Software II',
@@ -172,6 +195,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['Ingeniería de Software II'],
   },
   {
     name: 'LEGISLACIÓN INDUSTRIAL E INFORMÁTICA',
@@ -179,6 +203,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['LEGISLACIÓN INDUSTRIAL E INFORMÁTICA'],
   },
   {
     name: 'TALLER DE TESIS I',
@@ -186,6 +211,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['TALLER DE TESIS I', 'TESIS I'],
   },
   {
     name: 'REALIDAD VIRTUAL',
@@ -193,6 +219,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['REALIDAD VIRTUAL'],
   },
   {
     name: 'SISTEMAS EXPERTOS',
@@ -200,6 +227,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['SISTEMAS EXPERTOS'],
   },
   {
     name: 'PROCESAMIENTO DE IMÁGENES',
@@ -207,6 +235,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['PROCESAMIENTO DE IMÁGENES'],
   },
   {
     name: 'PRÁCTICAS PRE-PROFESIONALES',
@@ -214,6 +243,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['PRÁCTICAS PRE-PROFESIONALES'],
   },
   {
     name: 'ELECTIVO II',
@@ -221,6 +251,7 @@ const json = [
     credit: '',
     material: [],
     syllabus: faker.internet.url(),
+    synonyms: ['ELECTIVO II'],
   },
 ];
 

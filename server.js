@@ -41,6 +41,7 @@ app.set('views', path.join(__dirname, 'views'));
 // app.engine('html', require('ejs').renderFile)
 app.set('view engine', 'html');
 app.use('/api', require('./routes/api/index.js'));
+app.use('/messenger', require('./chatbots/Facebook/facebookBot'));
 // Telegram
 require('./chatbots/Telegram/telegramBot');
 
@@ -48,9 +49,9 @@ require('./chatbots/Telegram/telegramBot');
 // if (process.env.NODE_ENV === 'production') {
 // static folder
 // Handle SPA
-app.get(/.*/, (res) => {
-  res.sendFile(`${__dirname}/public/index.html`);
-});
+// app.get(/.*/, (res) => {
+//   res.sendFile(`${__dirname}/public/index.html`);
+// });
 // }
 
 app.listen(app.get('port'));

@@ -3,7 +3,6 @@ const TelegramBot = require('node-telegram-bot-api');
 const validator = require('validator');
 const uuid = require('uuid');
 const _ = require('mongoose-paginate-v2');
-const { param } = require('express-validator');
 const { structProtoToJson } = require('../helpers/structFunctions');
 const dialogflow = require('../dialogflow');
 const db = require('../../helpers/db');
@@ -181,6 +180,7 @@ async function getUserData(userId) {
     attendingPlatform: '',
     dni: '',
     type: '',
+    platformId: '',
   };
   try {
     let res = await db.filterItems({ platformId: userId }, ChatbotUser);
@@ -192,6 +192,7 @@ async function getUserData(userId) {
     userInfo.dni = res.payload[0].dni;
     userInfo.studentCode = res.payload[0].studentCode;
     userInfo.type = res.payload[0].type;
+    userInfo.platformId = res.payload[0].platformId;
   } catch (error) {
     throw error;
   }
@@ -209,6 +210,21 @@ async function handleDialogFlowResponse(sender, response) {
   let { action } = response;
   let contexts = response.outputContexts;
   let { parameters } = response;
+  let intentName = response.intent.displayName;
+  // check DNI
+  let documentNum = await verifyDocumentNum(sender);
+  if (!isDefined(documentNum)) {
+    if (
+      intentName !== 'GetStarted' &&
+      intentName !== 'GetStarted.docente' &&
+      intentName !== 'GetStarted.estudiante' &&
+      intentName !== 'GetStarted.foraneo'
+    ) {
+      console.log('no habia dni y se pedira..');
+      return sendToDialogFlow(sender, 'GetStarted');
+    }
+  }
+
   if (isDefined(action)) {
     handleDialogFlowAction(sender, action, messages, contexts, parameters);
   } else if (isDefined(messages)) {
@@ -229,6 +245,103 @@ async function handleDialogFlowAction(
   parameters,
 ) {
   switch (action) {
+    case 'ESIS.tramites.action':
+      try {
+        let procedureName = parameters.fields.procedureName.stringValue;
+        // if no procedure name
+        if (validator.isEmpty(procedureName)) {
+          return sendTextMessage(
+            senderId,
+            'Intenta preguntarme de la siguiente forma: ☑ requisitos de la constancia de estudios',
+          );
+        }
+        // continue
+        let procedures = (await db.filterItems({}, Procedure)).payload;
+        // generating dictionary
+        let proceduresDictionary = [];
+        procedures.forEach((procedure) => {
+          proceduresDictionary.push({
+            value: procedure.name,
+            synonym: procedure.synonyms,
+          });
+        });
+        let wordMatch = levenshtain.compareStrings(
+          procedureName,
+          proceduresDictionary,
+        );
+        console.log('la palabra: ', wordMatch);
+        if (wordMatch[0] > 0.5) {
+          let selectedProcedure = procedures.find(
+            (procedure) => procedure.name === wordMatch[1],
+          );
+          await sendTextMessage(
+            senderId,
+            `Los requisitos de ${selectedProcedure.name} son: `,
+          );
+          await sendTextMessage(senderId, selectedProcedure.requirements);
+        } else {
+          await sendTextMessage(
+            senderId,
+            'No encontré el trámite al que haces referencia, intenta preguntarme de la siguiente forma: ☑ requisitos de la constancia de estudios',
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      break;
+    case 'ESIS.docentes.listado.especifico.action':
+      try {
+        let teacherName = parameters.fields.teacherName.stringValue;
+        // if no procedure name
+        if (validator.isEmpty(teacherName)) {
+          return sendTextMessage(
+            senderId,
+            'Intenta preguntarme de la siguiente forma: ☑ contactos del docente + nombres docente',
+          );
+        }
+        // continue
+        let teachers = (await db.filterItems({}, Teacher)).payload;
+        // generating dictionary
+        let teachersDictionary = [];
+        teachers.forEach((teacher) => {
+          teachersDictionary.push({
+            value: teacher.first_name,
+            synonym: [
+              `${teacher.first_name} ${teacher.last_name}`,
+              teacher.first_name,
+              teacher.last_name,
+              ...teacher.first_name.split(' '),
+              ...teacher.last_name.split(' '),
+            ],
+          });
+        });
+        let wordMatch = levenshtain.compareStrings(
+          teacherName,
+          teachersDictionary,
+        );
+        console.log('la palabra: ', wordMatch);
+        if (wordMatch[0] > 0.5) {
+          let selectedTeacher = teachers.find(
+            (teacher) => teacher.first_name === wordMatch[1],
+          );
+          await sendTextMessage(
+            senderId,
+            `Encontré estos datos del docente: ${selectedTeacher.first_name} ${selectedTeacher.last_name}: `,
+          );
+          await sendTextMessage(
+            senderId,
+            `✅ Correo: ${selectedTeacher.email}`,
+          );
+        } else {
+          await sendTextMessage(
+            senderId,
+            'No encontré los datos del docente al que haces referencia, intenta preguntarme de la siguiente forma: ☑ contactos del docente + nombres docente',
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      break;
     case 'GetStarted.estudiante.action':
       try {
         const TYPE = 'ESTUDIANTE';
@@ -317,8 +430,14 @@ async function handleDialogFlowAction(
         let teacher = await getTeacherInfo(senderId);
         // search teacher into telegram
         let teacherTelegram = (
-          await db.getOneItem({ dni: teacher.dni }, ChatbotUser)
+          await db.getOneItem({ dni: teacher.dni, platform: 'F' }, ChatbotUser)
         ).payload;
+        if (!teacherTelegram) {
+          return sendTextMessage(
+            senderId,
+            'Lamentablemente tu tutor no se encuentra en mi lista de usuarios...',
+          );
+        }
         await sendTextMessage(
           teacherTelegram.platformId,
           `Buen día profesor <b>${teacher.first_name}</b>, un tutorado desea comunicarse con usted\n` +
@@ -414,7 +533,7 @@ async function handleDialogFlowAction(
           courseName,
           coursesDictionary,
         );
-        console.log('la palabrita: ', wordMatch);
+        console.log('la palabra: ', wordMatch);
         if (wordMatch[0] > 0.5) {
           let selectedCourse = courses.find(
             (course) => course.name === wordMatch[1],
@@ -495,6 +614,66 @@ async function handleDialogFlowAction(
                 callback_data: `yes_match_syllabus_course ${wordMatch[1]}`,
               },
               { text: 'No', callback_data: `no_match_syllabus_course` },
+            ],
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      break;
+    case 'Cursos.bibliografia.entity.action':
+      try {
+        let courseName = parameters.fields.courseName.stringValue;
+        // if no parameter received
+        if (validator.isEmpty(courseName)) {
+          return handleMessages(messages, senderId);
+        }
+        let courses = (await db.filterItems({}, Course)).payload;
+        // generating dictionary
+        let coursesDictionary = [];
+        courses.forEach((course) => {
+          coursesDictionary.push({
+            value: course.name,
+            synonym: course.synonyms,
+          });
+        });
+        let wordMatch = levenshtain.compareStrings(
+          courseName,
+          coursesDictionary,
+        );
+        console.log('la palabra: ', wordMatch);
+        if (wordMatch[0] > 0.5) {
+          let selectedCourse = courses.find(
+            (course) => course.name === wordMatch[1],
+          );
+          await sendTextMessage(
+            senderId,
+            `Muy bien {first_name}, deseas material de estudio del curso ${selectedCourse.name}`,
+          );
+          // si no cuenta con material bibliografico
+          if (selectedCourse.material.length > 0) {
+            let msg = '';
+            selectedCourse.material.forEach((material) => {
+              msg += `☑ ${material.name} ➡ ${material.url}\n`;
+            });
+            await sendTextMessage(senderId, msg);
+          } else {
+            await sendTextMessage(
+              senderId,
+              'Lamentablemente aún no me entregaron material bibligráfico respecto a ese curso 😔',
+            );
+          }
+        } else {
+          sendQuickReply(
+            senderId,
+            `No estoy seguro del nombre del curso que indicaste...\n ¿Quizás quisiste decir ${wordMatch[1]}?`,
+            [
+              {
+                content_type: 'text',
+                title: 'Sí',
+                payload: `yes_match_course ${wordMatch[1]}`,
+              },
+              { content_type: 'text', title: 'No', payload: `no_match_course` },
             ],
           );
         }
@@ -641,13 +820,23 @@ async function getTeacherInfo(senderId) {
 }
 
 async function verifyDocumentNum(senderId) {
-  let documentNumber;
   if (!documentNumbers.has(senderId)) {
-    // se verifica el dni en db
-    let userData = await getUserData(senderId);
-    if (userData.type === 'ESTUDIANTE') documentNumber = userData.studentCode;
-    else documentNumber = userData.dni;
-    documentNumbers.set(senderId, documentNumber);
+    try {
+      let user = (
+        await db.getOneItem(
+          { platformId: senderId, platform: 'T' },
+          ChatbotUser,
+        )
+      ).payload;
+      if (user.dni) {
+        documentNumbers.set(senderId, user.dni);
+      }
+      if (user.studentCode) {
+        documentNumbers.set(senderId, user.studentCode);
+      }
+    } catch (error) {
+      throw error;
+    }
   }
   return documentNumbers.get(senderId);
 }
@@ -658,19 +847,6 @@ async function sendToDialogFlow(senderId, messageText) {
     let result;
     setSessionAndUser(senderId);
     let session = sessionIds.get(senderId);
-    // check DNI or CODE Student middleware
-    // let documentNum = await verifyDocumentNum(senderId);
-    // console.log('este es el dni: ', documentNum);
-    // if (!isDefined(documentNum)) {
-    // console.log('se mandara esto: ');
-    // result = await dialogflow.sendToDialogFlow(
-    // 'GetStarted',
-    // session,
-    // 'TELEGRAM',
-    // );
-    // } else {
-    // end
-    // send to dialogflow
     result = await dialogflow.sendToDialogFlow(
       messageText,
       session,
@@ -747,11 +923,12 @@ async function sendButtons(senderId, title, buttons) {
     if (validator.isEmpty(button.callback_data)) {
       button.callback_data = button.text;
     }
-    return button;
+    return [button];
   });
+
   await bot.sendMessage(senderId, title, {
     reply_markup: {
-      inline_keyboard: [buttons],
+      inline_keyboard: buttons,
       resize_keyboard: true,
     },
     parse_mode: 'HTML',
